@@ -12,7 +12,9 @@ def connect_db(app):
     db.init_app(app)
 
 class User(db.Model):
-    """ create User class and users table """
+    """ create User class and users table 
+        create register method
+        create authenticate method """
 
     __tablename__ = 'users'
 
@@ -24,13 +26,13 @@ class User(db.Model):
     last_name = db.Column(db.String(30), nullable=False)
 
     @classmethod
-    def register(cls, username, pwd):
+    def register(cls, username, pwd, email, first_name, last_name):
         """ create hashed password for username """
 
         hashed = bcrypt.generate_password_hash(pwd)
         hashed_utf8 = hashed.decode('utf8')
 
-        return cls(username=username, password=hashed_utf8)
+        return cls(username=username, password=hashed_utf8, email=email, first_name=first_name, last_name=last_name)
 
     @classmethod
     def authenticate(cls, username, pwd):
@@ -43,3 +45,12 @@ class User(db.Model):
         else:
             return False
 
+class Feedback(db.Model):
+    """ create feedback class and feedback table """
+
+    __tablename__ = 'feedbacks'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    username = db.Column(db.String(20), db.ForeignKey('users.username'))
