@@ -10,7 +10,7 @@
     {{ form.hidden_tag() }}
 
     {% for field in form
-    if field.widget.input_type != hidden %}
+    if field.widget.input_type != 'hidden' %}
     <p>
         {{ field.label }}
         {{ field(class='form-control') }}
